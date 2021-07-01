@@ -2,6 +2,7 @@ import csv
 import Claim
 from datetime import datetime
 import holidays
+import pprint
 
 
 class Result():
@@ -138,17 +139,19 @@ def inspect(dir):
         frequnecy = int(days_between(j)/duplicate_dictionary[j.get_p_id()])
         diff_in_report = days_between(a=j.get_d_incident(), b=j.get_d_report())
         diff_in_holidays = int(days_berween_holidays(date_of_incident=str(j.d_incident)))
+        diff_in_claim_from_policy_holding_date = days_between(a=j.get_d_policy(),b=j.get_d_incident())
+        claim_times_more_than_liability = int(j.get_amount())/int(j.get_asset())
 
+        # Score based on how much they claim
         if (frequnecy <= 100 and frequnecy >= 50):
             score += 50
         elif (frequnecy < 50 and frequnecy >= 30):
             score += 200
         elif (frequnecy < 30 and frequnecy > 10):
             score += 400
-        elif (frequnecy <= 10 and frequnecy > 0):
-            score += 650
 
 
+        # difference in incident and report
         if (diff_in_report <= 7):
             score += 50
         elif (diff_in_report <= 30 and diff_in_report > 7):
@@ -158,17 +161,36 @@ def inspect(dir):
         elif (diff_in_report <= 365 and diff_in_report > 120):
             score += 500
 
-
+        # Reporting close to holidays
         if(diff_in_holidays <= 7):
             score += 300
         elif (diff_in_holidays <= 14 and diff_in_holidays > 7):
             score += 150
 
+        # Reporting in first 10 days of holding policy
+        if (diff_in_claim_from_policy_holding_date <= 10):
+            score += 700
+
+        # If the claim is more than liability
+        if (claim_times_more_than_liability > 1 and claim_times_more_than_liability < 1.5):
+            score += 200
+
+        if (claim_times_more_than_liability > 1.5 and claim_times_more_than_liability <= 2):
+            score += 250
+
+        if (claim_times_more_than_liability > 2 and claim_times_more_than_liability <= 2.5):
+            score += 300
+
+        if (claim_times_more_than_liability > 2.5 and claim_times_more_than_liability <= 3):
+            score += 350
+
+        if (claim_times_more_than_liability > 3):
+            score += 500
 
 
 
         result = Result(j,frequnecy, score)
-        result_dic[j.get_c_id()] = result.toList()
+        result_dic[j.get_c_id()] = result.toDictionary()
 
     return result_dic
 
@@ -216,6 +238,5 @@ def days_berween_holidays(date_of_incident, country = "UnitedStates"):
 
     return shotest_defference
 
-print(inspect("Excel_data/1625127082.4865746.csv"))
-# print(days_between("2020-01-01","2020-03-01"))
-print(days_berween_holidays(date_of_incident = "2021-12-17"))
+# pprint.pprint(inspect("Excel_data/1625127082.4865746.csv"))
+# print(days_berween_holidays(date_of_incident = "2021-12-17"))
