@@ -6,7 +6,7 @@ import pprint
 
 
 class Result():
-    def __init__(self, a, frequency, score):
+    def __init__(self, a, frequency, score,reason):
         self.p_id = a.get_p_id()
         self.username = a.get_username()
         self.d_id = a.get_d_id()
@@ -21,6 +21,7 @@ class Result():
         self.c_id = a.get_c_id()
         self.frequency = frequency
         self.score = score
+        self.reason = reason
 
     def set_frequency(self,value):
         self.frequency  = value
@@ -41,6 +42,7 @@ class Result():
         lis.append(self.c_id)
         lis.append(self.frequency)
         lis.append(self.score)
+        lis.append(self.reason)
 
         return lis
     def toDictionary(self):
@@ -58,7 +60,8 @@ class Result():
         dic["Insured Asset Value"] = self.asset
         dic["Claim ID"] = self.c_id
         dic["Frequency"] = self.frequency
-        dic["Score"] = self.score
+        dic["Risk Score"] = self.score
+        dic["Risk Score Factors"] = self.reason
 
         return dic
 
