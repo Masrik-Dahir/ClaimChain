@@ -5,7 +5,7 @@ import pandas as pd
 import openpyxl
 
 class Claim_block(object):
-    def __init__(self, username, d_id, p_id, d_policy, b_id,location,issue, d_incident,d_report,amount,asset):
+    def __init__(self, username, d_id, p_id, d_policy, b_id,location,issue, d_incident,d_report,amount,asset,c_id):
         self.p_id = p_id
         self.username = username
         self.d_id = d_id
@@ -17,6 +17,8 @@ class Claim_block(object):
         self.amount = amount
         self.location = location
         self.asset = asset
+        self.c_id = c_id
+
     def get_username(self):
         return self.username
     def get_p_id(self):
@@ -39,6 +41,8 @@ class Claim_block(object):
         return self.location
     def get_asset(self):
         return self.asset
+    def get_c_id(self):
+        return self.c_id
     def toDictionary(self):
         dic = {}
         dic["Username"] = self.username
@@ -52,6 +56,7 @@ class Claim_block(object):
         dic["Date of Report"] = self.d_report
         dic["Claimed mount"] = self.amount
         dic["Insured Asset Value"] = self.asset
+        dic["Claim ID"] = self.c_id
 
         return dic
 
@@ -68,5 +73,6 @@ class Claim_block(object):
         lis.append(self.d_report)
         lis.append( self.amount)
         lis.append(self.asset)
+        lis.append(self.c_id)
 
         return lis

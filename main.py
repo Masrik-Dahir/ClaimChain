@@ -32,11 +32,13 @@ def create_data(r):
     worksheet.write('J1', 'Amount')
     worksheet.write('K1', 'Asset')
     worksheet.write('L1', 'Sybil Attack')
+    worksheet.write('M1', 'Claim Id')
 
 
     n = 0
     driver_id = {}
     policy_id = {}
+    to_rand = []
     for i in range (0,r):
 
         n += 1
@@ -57,6 +59,13 @@ def create_data(r):
         J = randint(2000, 20000)
         K = randint(5000, 60000)
         L = 0
+        M = -1
+        rand = 0
+        while M < 0:
+            rand = randint(1000000, 9999999)
+            if rand not in to_rand:
+                M = rand
+                to_rand.append(rand)
 
         worksheet.write('A' + str(n + 1), A)
         worksheet.write('B' + str(n + 1), B)
@@ -70,6 +79,7 @@ def create_data(r):
         worksheet.write('J' + str(n + 1), J)
         worksheet.write('K' + str(n + 1), K)
         worksheet.write('L' + str(n + 1), L)
+        worksheet.write('M' + str(n + 1), M)
 
     i = 0
     while i<= int(r/10):
