@@ -9,7 +9,7 @@ import csv
 import openpyxl
 
 import Random_date_generator
-import Read_Excel
+import Generate_claim
 
 def create_data(r):
     current_directory = os.getcwd()
@@ -52,8 +52,8 @@ def create_data(r):
 
         D = "%d/%d/2020" %(randint(1, 12),randint(1, 28))
         E = randint(10000, 99999)
-        F = Read_Excel.extract()[randint(0, 28334)]
-        G = Read_Excel.issues()[randint(0,4)]
+        F = Generate_claim.extract()[randint(0, 28334)]
+        G = Generate_claim.issues()[randint(0, 4)]
         H = Random_date_generator.random_date(D, Random_date_generator.today(),random.random())
         I = Random_date_generator.random_date(H, Random_date_generator.today(),random.random())
         J = randint(2000, 20000)
