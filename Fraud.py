@@ -180,7 +180,7 @@ def inspect(dir):
                 # elif ()
                 # result = Result(j.get_username(),j.get_d_id(), j.get_p_id(),j.get_d_policy(),j.get_b_id(),j.get_location(),j.get_issue(),
                 #                 j.get_d_incident(),j.get_d_report(),j.get_amount(),j.get_asset(),duplicate_dictionary[j.get_p_id()], score)
-                result = Result(j.toList(),duplicate_dictionary[j.get_p_id()], score)
+                result = Result(j,duplicate_dictionary[j.get_p_id()], score)
                 print(result.toList())
                 result_dic[j.get_p_id(),n] = result.toList()
 
