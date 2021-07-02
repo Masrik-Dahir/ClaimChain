@@ -30,6 +30,9 @@ class Result():
     def set_score(self,value):
         self.score  = value
 
+    def add_reason(self,value):
+        self.reason  += str(value) + "\n"
+
     def toList(self):
         lis = []
         lis.append(self.username)
@@ -88,6 +91,17 @@ class Result():
                    self.reason == other.reason
         return False
 
+    def __sybil__(self, other):
+        if (isinstance(other, Result)):
+            if (self.username != other.username and self.p_id == other.p_id) or \
+                (self.username == other.username and self.p_id != other.p_id) or \
+                (self.username != other.username and self.d_id == other.d_id) or \
+                (self.username == other.username and self.d_id != other.d_id) or \
+                (self.p_id == other.p_id and self.d_id != other.d_id) or \
+                (self.p_id != other.p_id and self.d_id == other.d_id):
+                return True
+            else:
+                return False
 
 def read_csv(dir):
     # csv file name
@@ -241,14 +255,14 @@ def inspect(dir,dictionary = True):
 
         result_dic[j.get_c_id()] = result
 
-    n = 1
-    duplicate = []
-    sybil = []
-
     for i, j in result_dic.items():
         for i_i, j_j in result_dic.items():
-            if int(i) < int(i_i) and j.__eq__(j_j):
-                j_j.set_score(-1)
+            if int(i) < int(i_i) and j.__sybil__(j_j):
+                j.add_reason("Sybil Attack - Conflicts with claim %d" %(int(i_i)))
+                j_j.add_reason("Sybil Attack - Conflicts with claim %d" % (int(i)))
+            elif int(i) < int(i_i) and j.__eq__(j_j):
+                j_j.set_score("Duplicate")
+
 
     res = {}
     for i, j in result_dic.items():
@@ -310,4 +324,4 @@ def days_berween_holidays(date_of_incident, country = "UnitedStates"):
 
 
 
-pprint.pprint(inspect("Excel_data/1625198874.3317227.csv"))
+pprint.pprint(inspect("Excel_data/1625208537.8172386.csv"))
