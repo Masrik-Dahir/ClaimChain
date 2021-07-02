@@ -19,12 +19,16 @@ class Result():
         self.location = a.get_location()
         self.asset = a.get_asset()
         self.c_id = a.get_c_id()
+        self.age = a.get_age()
         self.frequency = frequency
         self.score = score
         self.reason = reason
 
     def set_frequency(self,value):
         self.frequency  = value
+
+    def set_score(self,value):
+        self.score  = value
 
     def toList(self):
         lis = []
@@ -40,6 +44,7 @@ class Result():
         lis.append(self.amount)
         lis.append(self.asset)
         lis.append(self.c_id)
+        lis.append(self.age)
         lis.append(self.frequency)
         lis.append(self.score)
         lis.append(self.reason)
@@ -59,6 +64,7 @@ class Result():
         dic["Claimed mount"] = self.amount
         dic["Insured Asset Value"] = self.asset
         dic["Claim ID"] = self.c_id
+        dic["Age"] = self.age
         dic["Frequency"] = self.frequency
         dic["Risk Score"] = self.score
         dic["Risk Score Factors"] = self.reason
@@ -69,6 +75,18 @@ class Result():
         d1 = datetime.strptime(str(self.d_policy).replace("/","-"), "%m-%d-%Y")
         d2 = datetime.strptime(str(self.d_incident).replace("/","-"), "%m-%d-%Y")
         return abs((d2 - d1).days)
+
+    def __eq__(self, other):
+        if (isinstance(other, Result)):
+            return self.username == other.username and self.p_id == other.p_id and \
+                   self.d_id == other.d_id and self.b_id == other.b_id and \
+                   self.d_policy == other.d_policy and self.location == other.location and \
+                   self.issue == other.issue and self.d_incident == other.d_incident and \
+                   self.d_report == other.d_report and self.amount == other.amount and \
+                   self.asset == other.asset and self.age == other.age and \
+                   self.frequency == other.frequency and self.score == other.score and \
+                   self.reason == other.reason
+        return False
 
 
 def read_csv(dir):
@@ -110,7 +128,7 @@ def read_csv(dir):
             # print("%10s" % col)
             lis.append(col)
         p_id_lis.append(lis[2])
-        claim_block = Claim.Claim_block(lis[0],lis[1],lis[2],lis[3],lis[4],lis[5],lis[6],lis[7],lis[8],lis[9],lis[10],lis[12])
+        claim_block = Claim.Claim_block(lis[0],lis[1],lis[2],lis[3],lis[4],lis[5],lis[6],lis[7],lis[8],lis[9],lis[10],lis[12],lis[13])
         # result = Result(claim_block,frequency=0,score=0)
         dic[n] = claim_block
         n += 1
@@ -123,79 +141,120 @@ def lis_duplicate_dictionary(lis):
     return {i:lis.count(i) for i in lis}
 
 
-def inspect(dir):
+def inspect(dir,dictionary = True):
     dic, duplicate_dictionary = read_csv(dir)
     result_dic = {}
     n = 0
 
     for i,j in dic.items():
         score = 0
-        # for i_i, j_j in dic.items():
-        #     if (i > i_i):
-        #         n += 1
-        #         score = 0
-        #         if (j.get_d_id() == j_j.get_d_id() and j.get_username() != j_j.get_username()) or \
-        #                 (j.get_d_id() == j_j.get_d_id() and j.get_p_id() != j_j.get_p_id() or \
-        #                 (j.get_d_id() != j_j.get_d_id() and j.get_p_id() == j_j.get_p_id()) or \
-        #                 (j.get_p_id() == j_j.get_p_id() and j.get_username() != j_j.get_username())):
-        #             score = 1000
         frequnecy = int(days_between(j)/duplicate_dictionary[j.get_p_id()])
         diff_in_report = days_between(a=j.get_d_incident(), b=j.get_d_report())
         diff_in_holidays = int(days_berween_holidays(date_of_incident=str(j.d_incident)))
         diff_in_claim_from_policy_holding_date = days_between(a=j.get_d_policy(),b=j.get_d_incident())
         claim_times_more_than_liability = int(j.get_amount())/int(j.get_asset())
+        reason = ""
+        age_ = int(j.get_age())
 
         # Score based on how much they claim
         if (frequnecy <= 100 and frequnecy >= 50):
             score += 50
+            reason += "[Claiming Frequency = %d days]- %d\n" %(frequnecy,50)
         elif (frequnecy < 50 and frequnecy >= 30):
             score += 200
+            reason += "[Claiming Frequency = %d days\]- %d\n" % (frequnecy, 200)
         elif (frequnecy < 30 and frequnecy > 10):
             score += 400
+            reason += "[Claiming Frequency = %d days]- %d\n" % (frequnecy, 400)
 
 
         # difference in incident and report
-        if (diff_in_report <= 7):
-            score += 50
         elif (diff_in_report <= 30 and diff_in_report > 7):
             score += 150
+            reason += "[Report - Incident = %d days]- %d\n" % (diff_in_report, 150)
         elif (diff_in_report <= 120 and diff_in_report > 30):
             score += 350
+            reason += "[Report - Incident = %d days]- %d\n" % (diff_in_report, 350)
         elif (diff_in_report <= 365 and diff_in_report > 120):
             score += 500
+            reason += "[Report - Incident = %d days]- %d\n" % (diff_in_report, 500)
 
         # Reporting close to holidays
         if(diff_in_holidays <= 7):
             score += 300
+            reason += "[Holidays - Incident = %d days]- %d\n" % (diff_in_holidays, 300)
+
         elif (diff_in_holidays <= 14 and diff_in_holidays > 7):
             score += 150
+            reason += "[Holidays - Incident = %d days]- %d\n" % (diff_in_holidays, 150)
 
         # Reporting in first 10 days of holding policy
         if (diff_in_claim_from_policy_holding_date <= 10):
             score += 700
+            reason += "[Policy date - incident = %d days]- %d\n" % (diff_in_claim_from_policy_holding_date, 700)
 
         # If the claim is more than liability
         if (claim_times_more_than_liability > 1 and claim_times_more_than_liability < 1.5):
             score += 200
+            reason += "[Claiming %d times more than insured asset]- %d\n" % (claim_times_more_than_liability, 200)
+
 
         if (claim_times_more_than_liability > 1.5 and claim_times_more_than_liability <= 2):
             score += 250
+            reason += "[Claiming %d times more than insured asset]- %d\n" % (claim_times_more_than_liability, 250)
 
         if (claim_times_more_than_liability > 2 and claim_times_more_than_liability <= 2.5):
             score += 300
+            reason += "[Claiming %d times more than insured asset]- %d\n" % (claim_times_more_than_liability, 300)
 
         if (claim_times_more_than_liability > 2.5 and claim_times_more_than_liability <= 3):
             score += 350
+            reason += "[Claiming %d times more than insured asset]- %d\n" % (claim_times_more_than_liability, 350)
 
         if (claim_times_more_than_liability > 3):
             score += 500
+            reason += "[Claiming %d times more than insured asset]- %d\n" % (claim_times_more_than_liability, 500)
+
+        # Age
+        if (age_ >= 16 and age_ < 18):
+            score += 250
+            reason += "[Claimant age is under 18]- %d\n" % (250)
+
+        if (age_ >= 18 and age_ < 21):
+            score += 200
+            reason += "[Claimant age is under 21]- %d\n" % (200)
+
+        if (age_ >= 21 and age_ <= 29):
+            score += 150
+            reason += "[Claimant age is under between 21 to 29]- %d\n" % (150)
+
+        if (age_ >= 30 and age_ <= 45):
+            score += 100
+            reason += "[Claimant age is under between 30 to 45]- %d\n" % (100)
+
+        if (age_ > 45 and age_ <= 60):
+            score += 50
+            reason += "[Claimant age is under between 46 to 60]- %d\n" % (50)
 
 
+        result = Result(j,frequnecy, score, reason)
 
-        result = Result(j,frequnecy, score)
-        result_dic[j.get_c_id()] = result.toDictionary()
+        result_dic[j.get_c_id()] = result
 
-    return result_dic
+    n = 1
+    duplicate = []
+    sybil = []
+
+    for i, j in result_dic.items():
+        for i_i, j_j in result_dic.items():
+            if int(i) < int(i_i) and j.__eq__(j_j):
+                j_j.set_score(-1)
+
+    res = {}
+    for i, j in result_dic.items():
+        res[i] = result_dic[i].toDictionary().copy()
+
+    return res
 
 
 def days_between(cliam_object=None,a=None,b=None):
@@ -241,5 +300,14 @@ def days_berween_holidays(date_of_incident, country = "UnitedStates"):
 
     return shotest_defference
 
-# pprint.pprint(inspect("Excel_data/1625127082.4865746.csv"))
-# print(days_berween_holidays(date_of_incident = "2021-12-17"))
+# def duplicate_in_dictionary(dic:dict):
+#     lis = []
+#     for i, j in dic.items():
+#         if j not in lis:
+#             lis.append(j)
+#         else:
+
+
+
+
+pprint.pprint(inspect("Excel_data/1625198874.3317227.csv"))

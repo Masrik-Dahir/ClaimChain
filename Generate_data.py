@@ -21,7 +21,7 @@ def create_data(r):
     worksheet = workbook.add_worksheet()
 
     worksheet.write('A1', 'User Name')
-    worksheet.write('B1', 'Driver\'s Id')
+    worksheet.write('B1', 'Driver Id')
     worksheet.write('C1', 'Policy Number')
     worksheet.write('D1', 'D.O.P')
     worksheet.write('E1', 'Block Id')
@@ -33,14 +33,19 @@ def create_data(r):
     worksheet.write('K1', 'Asset')
     worksheet.write('L1', 'Sybil Attack')
     worksheet.write('M1', 'Claim Id')
+    worksheet.write('N1', 'Age')
 
 
     n = 0
     driver_id = {}
     policy_id = {}
     to_rand = []
-    for i in range (0,r):
 
+    random_lis = []
+    random_dic = {}
+    for i in range (1,int(r/15)):
+        random_lis.append(randint(1,r))
+    for i in range (0,r):
         n += 1
         A = names.get_full_name()
 
@@ -60,12 +65,18 @@ def create_data(r):
         K = randint(5000, 60000)
         L = 0
         M = -1
+        N = randint(16,65)
         rand = 0
+
         while M < 0:
             rand = randint(1000000, 9999999)
             if rand not in to_rand:
                 M = rand
                 to_rand.append(rand)
+
+
+        if i in random_lis:
+            random_dic[i] = [A,B,C,D,E,F,G,H,I,J,K,L,M,N]
 
         worksheet.write('A' + str(n + 1), A)
         worksheet.write('B' + str(n + 1), B)
@@ -80,6 +91,7 @@ def create_data(r):
         worksheet.write('K' + str(n + 1), K)
         worksheet.write('L' + str(n + 1), L)
         worksheet.write('M' + str(n + 1), M)
+        worksheet.write('N' + str(n + 1), N)
 
     i = 0
     while i<= int(r/10):
@@ -97,6 +109,34 @@ def create_data(r):
         worksheet.write('L' + str(r - b), 1)
 
         i+=1
+    n = r
+    for key, value in random_dic.items():
+        n += 1
+        M = -1
+
+        while M < 0:
+            rand = randint(1000000, 9999999)
+            if rand not in to_rand:
+                M = rand
+                to_rand.append(rand)
+
+
+
+        worksheet.write('A' + str(n + 1), value[0])
+        worksheet.write('B' + str(n + 1), value[1])
+        worksheet.write('C' + str(n + 1), value[2])
+        worksheet.write('D' + str(n + 1), value[3])
+        worksheet.write('E' + str(n + 1), value[4])
+        worksheet.write('F' + str(n + 1), value[5])
+        worksheet.write('G' + str(n + 1), value[6])
+        worksheet.write('H' + str(n + 1), value[7])
+        worksheet.write('I' + str(n + 1), value[8])
+        worksheet.write('J' + str(n + 1), value[9])
+        worksheet.write('K' + str(n + 1), value[10])
+        worksheet.write('L' + str(n + 1), value[11])
+        worksheet.write('M' + str(n + 1), M)
+        worksheet.write('N' + str(n + 1), value[13])
+
 
     workbook.close()
 
