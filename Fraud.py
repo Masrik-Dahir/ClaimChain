@@ -1,6 +1,7 @@
 import csv
 import Claim
 from datetime import datetime
+import time
 import holidays
 import pprint
 
@@ -314,14 +315,11 @@ def days_berween_holidays(date_of_incident, country = "UnitedStates"):
 
     return shotest_defference
 
-# def duplicate_in_dictionary(dic:dict):
-#     lis = []
-#     for i, j in dic.items():
-#         if j not in lis:
-#             lis.append(j)
-#         else:
 
 
 
-
-pprint.pprint(inspect("Excel_data/1625208537.8172386.csv"))
+pprint.pprint(inspect("Excel_data/1625246842.4975214.csv"))
+name = str(time.time()).replace(".","")
+my_file = open(name + ".txt", "w")
+my_file.write(pprint.pprint(inspect("Excel_data/1625246842.4975214.csv")))
+my_file.close()

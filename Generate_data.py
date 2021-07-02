@@ -43,8 +43,30 @@ def create_data(r):
 
     random_lis = []
     random_dic = {}
+
+    second_claim_lis = []
+    second_claim_dic = {}
+
+    third_claim_lis = []
+    third_claim_dic = {}
+
+    fourth_claim_lis = []
+    fourth_claim_dic = {}
+
+
     for i in range (1,int(r/15)):
         random_lis.append(randint(1,r))
+
+    for i in range (1,int(r/3)):
+        second_claim_lis.append(randint(1,r))
+
+    for i in range (1,int(r/5)):
+        third_claim_lis.append(randint(1,r))
+
+    for i in range (1,int(r/10)):
+        fourth_claim_lis.append(randint(1,r))
+
+
     for i in range (0,r):
         n += 1
         A = names.get_full_name()
@@ -77,6 +99,15 @@ def create_data(r):
 
         if i in random_lis:
             random_dic[i] = [A,B,C,D,E,F,G,H,I,J,K,L,M,N]
+
+        if i in second_claim_lis:
+            second_claim_dic[i] = [A,B,C,D,E,F,G,H,I,J,K,L,M,N]
+
+        if i in third_claim_lis:
+            third_claim_dic[i] = [A,B,C,D,E,F,G,H,I,J,K,L,M,N]
+
+        if i in fourth_claim_lis:
+            fourth_claim_dic[i] = [A,B,C,D,E,F,G,H,I,J,K,L,M,N]
 
         worksheet.write('A' + str(n + 1), A)
         worksheet.write('B' + str(n + 1), B)
@@ -119,9 +150,6 @@ def create_data(r):
             if rand not in to_rand:
                 M = rand
                 to_rand.append(rand)
-
-
-
         worksheet.write('A' + str(n + 1), value[0])
         worksheet.write('B' + str(n + 1), value[1])
         worksheet.write('C' + str(n + 1), value[2])
@@ -134,6 +162,96 @@ def create_data(r):
         worksheet.write('J' + str(n + 1), value[9])
         worksheet.write('K' + str(n + 1), value[10])
         worksheet.write('L' + str(n + 1), value[11])
+        worksheet.write('M' + str(n + 1), M)
+        worksheet.write('N' + str(n + 1), value[13])
+
+    for key, value in second_claim_dic.items():
+        n += 1
+        E = randint(10000, 99999)
+        F = Random_cities.extract()[randint(0, 28334)]
+        G = Random_cities.issues()[randint(0, 4)]
+        H = Random_date_generator.random_date(D, Random_date_generator.today(), random.random())
+        I = Random_date_generator.random_date(H, Random_date_generator.today(), random.random())
+        J = randint(2000, 20000)
+        L = 0
+        M = -1
+        while M < 0:
+            rand = randint(1000000, 9999999)
+            if rand not in to_rand:
+                M = rand
+                to_rand.append(rand)
+        worksheet.write('A' + str(n + 1), value[0])
+        worksheet.write('B' + str(n + 1), value[1])
+        worksheet.write('C' + str(n + 1), value[2])
+        worksheet.write('D' + str(n + 1), value[3])
+        worksheet.write('E' + str(n + 1), E)
+        worksheet.write('F' + str(n + 1), F)
+        worksheet.write('G' + str(n + 1), G)
+        worksheet.write('H' + str(n + 1), H)
+        worksheet.write('I' + str(n + 1), I)
+        worksheet.write('J' + str(n + 1), J)
+        worksheet.write('K' + str(n + 1), value[10])
+        worksheet.write('L' + str(n + 1), L)
+        worksheet.write('M' + str(n + 1), M)
+        worksheet.write('N' + str(n + 1), value[13])
+
+    for key, value in third_claim_dic.items():
+        n += 1
+        E = randint(10000, 99999)
+        F = Random_cities.extract()[randint(0, 28334)]
+        G = Random_cities.issues()[randint(0, 4)]
+        H = Random_date_generator.random_date(D, Random_date_generator.today(), random.random())
+        I = Random_date_generator.random_date(H, Random_date_generator.today(), random.random())
+        J = randint(2000, 20000)
+        L = 0
+        M = -1
+        while M < 0:
+            rand = randint(1000000, 9999999)
+            if rand not in to_rand:
+                M = rand
+                to_rand.append(rand)
+        worksheet.write('A' + str(n + 1), value[0])
+        worksheet.write('B' + str(n + 1), value[1])
+        worksheet.write('C' + str(n + 1), value[2])
+        worksheet.write('D' + str(n + 1), value[3])
+        worksheet.write('E' + str(n + 1), E)
+        worksheet.write('F' + str(n + 1), F)
+        worksheet.write('G' + str(n + 1), G)
+        worksheet.write('H' + str(n + 1), H)
+        worksheet.write('I' + str(n + 1), I)
+        worksheet.write('J' + str(n + 1), J)
+        worksheet.write('K' + str(n + 1), value[10])
+        worksheet.write('L' + str(n + 1), L)
+        worksheet.write('M' + str(n + 1), M)
+        worksheet.write('N' + str(n + 1), value[13])
+
+    for key, value in fourth_claim_dic.items():
+        n += 1
+        E = randint(10000, 99999)
+        F = Random_cities.extract()[randint(0, 28334)]
+        G = Random_cities.issues()[randint(0, 4)]
+        H = Random_date_generator.random_date(D, Random_date_generator.today(), random.random())
+        I = Random_date_generator.random_date(H, Random_date_generator.today(), random.random())
+        J = randint(2000, 20000)
+        L = 0
+        M = -1
+        while M < 0:
+            rand = randint(1000000, 9999999)
+            if rand not in to_rand:
+                M = rand
+                to_rand.append(rand)
+        worksheet.write('A' + str(n + 1), value[0])
+        worksheet.write('B' + str(n + 1), value[1])
+        worksheet.write('C' + str(n + 1), value[2])
+        worksheet.write('D' + str(n + 1), value[3])
+        worksheet.write('E' + str(n + 1), E)
+        worksheet.write('F' + str(n + 1), F)
+        worksheet.write('G' + str(n + 1), G)
+        worksheet.write('H' + str(n + 1), H)
+        worksheet.write('I' + str(n + 1), I)
+        worksheet.write('J' + str(n + 1), J)
+        worksheet.write('K' + str(n + 1), value[10])
+        worksheet.write('L' + str(n + 1), L)
         worksheet.write('M' + str(n + 1), M)
         worksheet.write('N' + str(n + 1), value[13])
 
@@ -164,4 +282,4 @@ def create_data(r):
 
     return df
 
-create_data(100)
+create_data(50000)
