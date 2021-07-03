@@ -318,8 +318,8 @@ def days_berween_holidays(date_of_incident, country = "UnitedStates"):
 
 
 
-pprint.pprint(inspect("Excel_data/1625246842.4975214.csv"))
+# pprint.pprint(inspect("Excel_data/1625246842.4975214.csv"))
 name = str(time.time()).replace(".","")
 my_file = open(name + ".txt", "w")
-my_file.write(pprint.pprint(inspect("Excel_data/1625246842.4975214.csv")))
+my_file.write(inspect("Excel_data/1625247454.3564217.csv"))
 my_file.close()

@@ -1,4 +1,3 @@
-# importing csv module
 import csv
 
 def extract():

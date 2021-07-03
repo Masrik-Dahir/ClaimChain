@@ -1,9 +1,3 @@
-# importing csv module
-import csv
-import xlrd
-import pandas as pd
-import openpyxl
-
 class Claim_block(object):
     def __init__(self, username, d_id, p_id, d_policy, b_id,location,issue, d_incident,d_report,amount,asset,c_id,age):
         self.p_id = p_id
