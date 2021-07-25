@@ -68,6 +68,13 @@ def create_data(r):
 
 
     for i in range (0,r):
+        fraud = False
+        luck = randint(1, 10)
+        if luck > 1:
+            fraud = False
+        else:
+            fraud = True
+
         n += 1
         A = names.get_full_name()
 
@@ -282,4 +289,4 @@ def create_data(r):
 
     return df
 
-create_data(50000)
+create_data(50)

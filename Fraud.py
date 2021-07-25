@@ -1,10 +1,12 @@
 import csv
+import os
+
 import Claim
 from datetime import datetime
 import time
 import holidays
 import pprint
-
+import xlsxwriter as xlsxwriter
 
 class Result():
     def __init__(self, a, frequency, score,reason):
@@ -104,7 +106,7 @@ class Result():
             else:
                 return False
 
-def read_csv(dir):
+def read_csv(dir: str) -> tuple:
     # csv file name
     filename = dir
 
@@ -267,7 +269,7 @@ def inspect(dir,dictionary = True):
 
     res = {}
     for i, j in result_dic.items():
-        res[i] = result_dic[i].toDictionary().copy()
+        res[i] = result_dic[i].toList().copy()
 
     return res
 
@@ -316,10 +318,54 @@ def days_berween_holidays(date_of_incident, country = "UnitedStates"):
     return shotest_defference
 
 
+def create_cvs(dir: str):
+    dic = inspect(dir)
+
+    current_directory = os.getcwd()
+    final_directory = os.path.join(current_directory, r'Result')
+    if not os.path.exists(final_directory):
+        os.makedirs(final_directory)
+    name = str(dir.replace("Excel_data/","").replace(".csv","").replace(".",""))
+    workbook = xlsxwriter.Workbook('Result/' + name + '.xlsx')
+    worksheet = workbook.add_worksheet()
+
+    worksheet.write('A1', 'Username')
+    worksheet.write('B1', 'Driver Id')
+    worksheet.write('C1', 'Policy Number')
+    worksheet.write('D1', 'D.O.P')
+    worksheet.write('E1', 'Block Id')
+    worksheet.write('F1', 'Location')
+    worksheet.write('G1', 'Issue')
+    worksheet.write('H1', 'D.O.I')
+    worksheet.write('I1', 'D.O.R')
+    worksheet.write('J1', 'Amount')
+    worksheet.write('K1', 'Asset')
+    worksheet.write('L1', 'Claim Id')
+    worksheet.write('M1', 'Age')
+    worksheet.write('N1', 'Frequency')
+    worksheet.write('O1', 'Risk Score')
+    n = 0
+    for i,j in dic.items():
+        n += 1
+        worksheet.write('A' + str(n + 1), j[0])
+        worksheet.write('B' + str(n + 1), j[1])
+        worksheet.write('C' + str(n + 1), j[2])
+        worksheet.write('D' + str(n + 1), j[3])
+        worksheet.write('E' + str(n + 1), j[4])
+        worksheet.write('F' + str(n + 1), j[5])
+        worksheet.write('G' + str(n + 1), j[6])
+        worksheet.write('H' + str(n + 1), j[7])
+        worksheet.write('I' + str(n + 1), j[8])
+        worksheet.write('J' + str(n + 1), j[9])
+        worksheet.write('K' + str(n + 1), j[10])
+        worksheet.write('L' + str(n + 1), j[11])
+        worksheet.write('M' + str(n + 1), j[12])
+        worksheet.write('N' + str(n + 1), j[13])
+        worksheet.write('O' + str(n + 1), j[14])
+    workbook.close()
 
 
 # pprint.pprint(inspect("Excel_data/1625246842.4975214.csv"))
-name = str(time.time()).replace(".","")
-my_file = open(name + ".txt", "w")
-my_file.write(inspect("Excel_data/1625247454.3564217.csv"))
-my_file.close()
+# 1625571009.4605668.csv
+
+print(create_cvs("Excel_data/1626487638.3813422.csv"))
