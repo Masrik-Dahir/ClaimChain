@@ -285,7 +285,7 @@ def create_data(r):
 
     # read the csv file and
     # covert into dataframe object
-    df = pd.DataFrame(pd.read_csv("Excel_data/"+name+".csv", sep='|', encoding='latin-1'))
+    # df = pd.DataFrame(pd.read_csv("Excel_data/"+name+".csv", sep='|', encoding='latin-1'))
 
-    return df
+    return 0
 
