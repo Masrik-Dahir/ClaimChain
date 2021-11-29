@@ -17,4 +17,9 @@ jobs:
           python-version: ${{ matrix.python-version }}
           architecture: x64  
       - run: pip install names
+      - run: pip install xlsxwriter
+      - run: pip install pandas
+      - run: pip install csv
+      - run: pip install openpyxl
+      - run: pip install holidays
       - run: python main.py
