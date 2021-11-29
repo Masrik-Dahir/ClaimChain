@@ -289,4 +289,3 @@ def create_data(r):
 
     return df
 
-create_data(50)
