@@ -1,4 +1,8 @@
 name: Python Package using Conda
+dependencies:
+- ffmpeg=3.2.4=1
+- freetype=2.7=vc14_1
+- imageio=2.2.0=py35_0
 
 on: [push]
 
